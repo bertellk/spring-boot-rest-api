@@ -6,7 +6,6 @@ import com.berkaytell.mapper.TeacherMapper;
 import com.berkaytell.model.Teacher;
 import com.berkaytell.repository.TeacherRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,4 +39,10 @@ public class TeacherServiceImpl implements TeacherService{
 
         return teachers.stream().map(teacher -> teacherMapper.forResponse().map(teacher, GetAllTeachersDto.class)).toList();
     }
+
+    private void conflict(){
+        //conflict
+    }
+
+
 }
