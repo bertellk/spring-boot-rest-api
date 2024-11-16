@@ -1,7 +1,7 @@
-package com.berkaytell.service.StudentService;
+package com.berkaytell.service.student;
 
-import com.berkaytell.dto.GetAllStudentsDto;
-import com.berkaytell.dto.GetSingleStudentDto;
+import com.berkaytell.dto.student.GetAllStudentsDto;
+import com.berkaytell.dto.student.GetSingleStudentDto;
 import com.berkaytell.mapper.StudentMapper;
 import com.berkaytell.model.Student;
 import com.berkaytell.repository.StudentRepository;
@@ -40,7 +40,4 @@ public class StudentServiceImpl implements StudentService {
                 .toList();
     }
 
-    private void conflict(){
-        //conflict
-    }
 }

@@ -1,4 +1,4 @@
-package com.berkaytell.dto;
+package com.berkaytell.dto.student;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-
-public class GetAllTeachersDto {
-    private String city; //Tüm öğretmenlerin şehirleri gelecek.
+public class GetAllStudentsDto {
+    private Integer age;
 }

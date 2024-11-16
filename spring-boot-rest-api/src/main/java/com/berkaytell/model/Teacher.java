@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "teacher")
+@Table(name = "teachers")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -16,7 +16,7 @@ public class Teacher {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long teachNum;
+    private Long id;
 
     private String name;
     private String lastName;

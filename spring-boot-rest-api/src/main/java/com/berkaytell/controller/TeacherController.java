@@ -1,8 +1,8 @@
 package com.berkaytell.controller;
 
-import com.berkaytell.dto.GetAllTeachersDto;
-import com.berkaytell.dto.GetSingleTeacherDto;
-import com.berkaytell.service.StudentService.TeacherService;
+import com.berkaytell.dto.teacher.GetAllTeachersDto;
+import com.berkaytell.dto.teacher.GetSingleTeacherDto;
+import com.berkaytell.service.teacher.TeacherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,9 +19,9 @@ public class TeacherController {
 //Bu kontrolcülerde ortak kullanılan servisleri de yazabilirsin.
     private final TeacherService teacherService;
 
-    @GetMapping("get-by-teachNum/{teachNum}")
-    ResponseEntity<GetSingleTeacherDto>findById(@PathVariable(required = false) Long teachNum) {
-        return ResponseEntity.ok(teacherService.findById(teachNum));
+    @GetMapping("get-by-teachNum/{id}")
+    ResponseEntity<GetSingleTeacherDto>findById(@PathVariable(required = false) Long id) {
+        return ResponseEntity.ok(teacherService.findById(id));
 
     }
     @GetMapping("get-all")
