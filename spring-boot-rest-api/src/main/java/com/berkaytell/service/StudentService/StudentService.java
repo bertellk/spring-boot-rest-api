@@ -9,4 +9,5 @@ public interface StudentService {
     GetSingleStudentDto findById(Long id);
 
     List<GetAllStudentsDto> getAll();
+
 }

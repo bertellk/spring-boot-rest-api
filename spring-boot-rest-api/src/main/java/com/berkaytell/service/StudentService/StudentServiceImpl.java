@@ -39,4 +39,10 @@ public class StudentServiceImpl implements StudentService {
                 .map(student -> studentMapper.forResponse().map(student, GetAllStudentsDto.class))
                 .toList();
     }
+
+    private void conflict2 () {
+        //blabla
+
+        //blabla
+    }
 }
