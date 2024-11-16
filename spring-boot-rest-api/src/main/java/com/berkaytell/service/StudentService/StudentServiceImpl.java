@@ -40,6 +40,10 @@ public class StudentServiceImpl implements StudentService {
                 .toList();
     }
 
+    private void conflict(){
+        //conflict
+    }
+
     private void conflict2 () {
         //blabla
 
