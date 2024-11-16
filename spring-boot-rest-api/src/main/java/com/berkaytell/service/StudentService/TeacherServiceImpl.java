@@ -40,9 +40,4 @@ public class TeacherServiceImpl implements TeacherService{
         return teachers.stream().map(teacher -> teacherMapper.forResponse().map(teacher, GetAllTeachersDto.class)).toList();
     }
 
-    private void conflict(){
-        //conflict
-    }
-
-
 }
