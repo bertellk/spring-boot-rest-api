@@ -22,7 +22,6 @@ public class TeacherController {
     @GetMapping("get-by-teachNum/{id}")
     ResponseEntity<GetSingleTeacherDto>findById(@PathVariable(required = false) Long id) {
         return ResponseEntity.ok(teacherService.findById(id));
-
     }
     @GetMapping("get-all")
     ResponseEntity<List<GetAllTeachersDto>>getAll(){
