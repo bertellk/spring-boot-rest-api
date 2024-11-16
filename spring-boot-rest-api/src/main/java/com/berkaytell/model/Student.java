@@ -1,10 +1,10 @@
 package com.berkaytell.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Table(name = "students")
@@ -12,7 +12,11 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Student {
+@SuperBuilder // newlerken istediğimiz alanları set etmek için kullanılır
+@SQLDelete(sql = "UPDATE students SET is_deleted = true WHERE id=?") // repo.delete() metodu çağrılınca update atar
+@SQLRestriction(value = "is_deleted = false") // findById ve findAll metodunda silinenlerin gelmemesi için
+
+public class Student extends BaseEntity {
     // Veritabanındaki Karşılığı Olan Yer
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,5 +28,4 @@ public class Student {
     private String city;
     private Integer age;
     private Boolean hasPayTheFee;
-    private Boolean isDeleted; // Veri Tabanından Veri Silinirken True Olarak Setlenir.
 }

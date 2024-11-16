@@ -9,7 +9,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class GetAllStudentsDto {
+public class InsertStudentDto {
     private Integer age;
+    private String city;
     private String name;
+    private String lastName;
+    private String nationalityNumber;
 }
