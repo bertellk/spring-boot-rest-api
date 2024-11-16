@@ -1,4 +1,4 @@
-package com.berkaytell.dto;
+package com.berkaytell.dto.teacher;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

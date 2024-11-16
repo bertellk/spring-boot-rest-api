@@ -1,7 +1,7 @@
-package com.berkaytell.service.StudentService;
+package com.berkaytell.service.teacher;
 
-import com.berkaytell.dto.GetAllTeachersDto;
-import com.berkaytell.dto.GetSingleTeacherDto;
+import com.berkaytell.dto.teacher.GetAllTeachersDto;
+import com.berkaytell.dto.teacher.GetSingleTeacherDto;
 import com.berkaytell.mapper.TeacherMapper;
 import com.berkaytell.model.Teacher;
 import com.berkaytell.repository.TeacherRepository;
@@ -18,13 +18,12 @@ public class TeacherServiceImpl implements TeacherService{
     private final TeacherMapper teacherMapper;
 
 
-
     @Override
-    public GetSingleTeacherDto findById(Long teachNum) {
-        if (Objects.isNull(teachNum))
-            throw new IllegalArgumentException("teachNum boş olamaz.");
+    public GetSingleTeacherDto findById(Long id) {
+        if (Objects.isNull(id))
+            throw new IllegalArgumentException("id boş olamaz.");
 
-        Teacher teacher = teacherRepository.findById(teachNum).orElse(null);
+        Teacher teacher = teacherRepository.findById(id).orElse(null);
 
         if (Objects.isNull(teacher))
             throw new IllegalArgumentException("Öğretmen bulunamadı.");

@@ -1,8 +1,8 @@
 package com.berkaytell.controller;
 
-import com.berkaytell.dto.GetAllStudentsDto;
-import com.berkaytell.dto.GetSingleStudentDto;
-import com.berkaytell.service.StudentService.StudentService;
+import com.berkaytell.dto.student.GetAllStudentsDto;
+import com.berkaytell.dto.student.GetSingleStudentDto;
+import com.berkaytell.service.student.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
