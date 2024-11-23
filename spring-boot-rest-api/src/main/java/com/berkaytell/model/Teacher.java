@@ -34,6 +34,6 @@ public class Teacher extends BaseEntity{
     private String city;
     private Integer age; //bu sayede null olsa bile problem olmaz
     private Boolean hasReceivedTheFee;
-    private Boolean isDeleted; //bilgiler asla silinmez.
+    // private Boolean isDeleted; //base entity içinde olduğu için yorum satırına alındı
 
 }
