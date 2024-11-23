@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 
-public class  InsertTeacherDto {
+public class InsertTeacherDto {
 
     private String city;
     private String name;
