@@ -2,13 +2,12 @@ package com.berkaytell.controller;
 
 import com.berkaytell.dto.teacher.GetAllTeachersDto;
 import com.berkaytell.dto.teacher.GetSingleTeacherDto;
+import com.berkaytell.dto.teacher.InsertTeacherDto;
 import com.berkaytell.service.teacher.TeacherService;
+import jakarta.persistence.Tuple;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,6 +25,23 @@ public class TeacherController {
     @GetMapping("get-all")
     ResponseEntity<List<GetAllTeachersDto>>getAll(){
         return ResponseEntity.ok(teacherService.getAll());
+    }
+
+    @PostMapping("insert")
+    ResponseEntity<String> insert(@RequestBody InsertTeacherDto insertDto){
+        return ResponseEntity.ok(teacherService.insert(insertDto));
+    }
+    @PostMapping("update-has-received-the-fee/{id}")
+    ResponseEntity<String> updateHasReceivedTheFee(@PathVariable Long id,@RequestParam Boolean receivedStatus){
+        return ResponseEntity.ok(teacherService.updateHasReceivedTheFee(id,receivedStatus));
+    }
+    @GetMapping("delete/{id}")
+    ResponseEntity<String> delete(@PathVariable Long id){
+        return ResponseEntity.ok(teacherService.delete(id));
+    }
+    @GetMapping("get-tuple")
+    ResponseEntity<Tuple> getTuple(@RequestParam String name){
+        return ResponseEntity.ok(teacherService.getTuple(name));
     }
 
 }
