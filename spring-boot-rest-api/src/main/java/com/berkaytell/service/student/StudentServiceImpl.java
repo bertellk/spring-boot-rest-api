@@ -7,6 +7,8 @@ import com.berkaytell.dto.student.InsertStudentDto;
 import com.berkaytell.mapper.StudentMapper;
 import com.berkaytell.model.Student;
 import com.berkaytell.repository.StudentRepository;
+import com.berkaytell.result.DataResult;
+import com.berkaytell.result.Result;
 import jakarta.persistence.Tuple;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
@@ -23,7 +25,6 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public GetSingleStudentDto findById(Long id) {
-
         if (Objects.isNull(id))
             throw new IllegalArgumentException("Id Boş Bırakılamaz");
 
@@ -33,6 +34,20 @@ public class StudentServiceImpl implements StudentService {
             throw new IllegalArgumentException("Öğrenci Bulunamadı");
          // request response pattern
         return studentMapper.forResponse().map(student, GetSingleStudentDto.class);
+    }
+
+    @Override
+    public DataResult<GetSingleStudentDto> findByIdDataResult(Long id) {
+        if (Objects.isNull(id))
+            throw new IllegalArgumentException("Id Boş Bırakılamaz");
+
+        Student student = studentRepository.findById(id).orElse(null);
+
+        if (Objects.isNull(student))
+            throw new IllegalArgumentException("Öğrenci Bulunamadı");
+        // request response pattern
+        GetSingleStudentDto dto = studentMapper.forResponse().map(student, GetSingleStudentDto.class);
+        return DataResult.of(dto, true);
     }
 
     @Override
@@ -105,6 +120,18 @@ public class StudentServiceImpl implements StudentService {
                 .age((Integer) tuple.get("age"))
                 .build();
         return studentRepository.findByCustomName(name);
+    }
+
+    @Override
+    public Result insertResult(InsertStudentDto dto) {
+        Student studentToInsert = studentMapper.forResponse().map(dto, Student.class);
+
+        try {
+            studentRepository.save(studentToInsert);
+            return Result.of(true);
+        } catch (DataAccessException e) {
+            return Result.of(false);
+        }
     }
 
 }

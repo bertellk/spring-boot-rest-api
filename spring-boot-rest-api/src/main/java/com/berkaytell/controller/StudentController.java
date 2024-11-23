@@ -3,6 +3,8 @@ package com.berkaytell.controller;
 import com.berkaytell.dto.student.GetAllStudentsDto;
 import com.berkaytell.dto.student.GetSingleStudentDto;
 import com.berkaytell.dto.student.InsertStudentDto;
+import com.berkaytell.result.DataResult;
+import com.berkaytell.result.Result;
 import com.berkaytell.service.student.StudentService;
 import jakarta.persistence.Tuple;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +33,11 @@ public class StudentController {
         return ResponseEntity.ok(studentService.findById(id));
     }
 
+    @GetMapping("get-by-id-data-result/{id}")
+    ResponseEntity<DataResult<GetSingleStudentDto>> findByIdDataResult(@PathVariable(required = false) Long id) {
+            return ResponseEntity.ok(studentService.findByIdDataResult(id));
+    }
+
     @GetMapping("get-all")
     ResponseEntity<List<GetAllStudentsDto>> getAll() {
         return ResponseEntity.ok(studentService.getAll());
@@ -39,6 +46,11 @@ public class StudentController {
     @PostMapping("insert")
     ResponseEntity<String> insert(@RequestBody InsertStudentDto insertDto) {
         return ResponseEntity.ok(studentService.insert(insertDto));
+    }
+
+    @PostMapping("insert-result")
+    ResponseEntity<Result> insertResult(@RequestBody InsertStudentDto insertDto) {
+        return ResponseEntity.ok(studentService.insertResult(insertDto));
     }
 
     @PostMapping("update-has-pay-the-fee/{id}")
