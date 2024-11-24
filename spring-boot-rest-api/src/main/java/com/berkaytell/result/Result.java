@@ -3,6 +3,12 @@ package com.berkaytell.result;
 import com.berkaytell.configuration.ConstantMessage;
 
 public class Result implements IResult{
+    // Amacı kullanıcıyı bilgilendirmektir.
+    // Yazılımcı kaynaklı Projeyi patlatan durumlarda throw ile dönüş yapılır. (Veritabanı hataları, null pointer exception)
+    // Kullanıcı taraflı durumlarda Result dönülür. (Öğrenci parasını ödemeden kaydolamaz, Tc'no 11'den farklı olamaz)
+    // yazılımcı kaynaklı -> throw
+    // user kaynaklı ->
+
     private String message;
     private final boolean success;
 

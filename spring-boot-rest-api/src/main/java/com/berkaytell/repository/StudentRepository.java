@@ -33,4 +33,13 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 //    @Modifying
 //    @Query("insert into (1, 'ahmet') blabla")
     // modifying kullandığın sorguyu çağıran metota @Transactional
+
+    List<Student> findByCourse_id(Long courseId);
+
+    @Query("SELECT s FROM Student s WHERE s.course.id = :courseId")
+    List<Student> findByCourseId(@Param("courseId") Long courseId);
+
+    @Query("SELECT s.age FROM Student s WHERE s.id = :id")
+    Integer getAgeById(@Param("id") Long id);
+
 }

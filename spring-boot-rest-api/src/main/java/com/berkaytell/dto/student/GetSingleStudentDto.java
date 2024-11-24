@@ -1,5 +1,6 @@
 package com.berkaytell.dto.student;
 
+import com.berkaytell.dto.course.GetSingleCourseDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,4 +15,5 @@ public class GetSingleStudentDto {
     private String lastName;
     private String city;
     private Boolean hasPayTheFee;
+    private GetSingleCourseDto course;
 }

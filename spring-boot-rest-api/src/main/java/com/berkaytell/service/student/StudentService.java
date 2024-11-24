@@ -25,4 +25,14 @@ public interface StudentService {
     Tuple getTuple(String name);
 
     Result insertResult(InsertStudentDto dto);
+
+    void detachStudentsFromCourse(Long courseId);
+
+    boolean existsById(Long id);
+
+    Integer getAgeById(Long id);
+
+    boolean getHasPayTheFeeById(Long id);
+
+    Result assignStudent(Long studentId, Long courseId);
 }
