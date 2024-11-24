@@ -7,12 +7,17 @@ import org.springframework.stereotype.Component;
 
 @AllArgsConstructor
 @Component
-// Entity'yi Dto'ya Çeviren Sınıf
-public class StudentMapper {
+public class CustomMapper {
     private ModelMapper modelMapper;
 
     public ModelMapper forResponse(){
         this.modelMapper.getConfiguration().setAmbiguityIgnored(true).setMatchingStrategy(MatchingStrategies.STRICT);
         return this.modelMapper;
     }
+
+    public ModelMapper forRequest(){
+        this.modelMapper.getConfiguration().setAmbiguityIgnored(true).setMatchingStrategy(MatchingStrategies.STRICT);
+        return this.modelMapper;
+    }
+
 }

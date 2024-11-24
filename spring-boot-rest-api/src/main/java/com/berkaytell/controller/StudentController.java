@@ -68,4 +68,9 @@ public class StudentController {
         return ResponseEntity.ok(studentService.getTuple(name));
     }
 
+    @GetMapping("assign-student")
+    ResponseEntity<Result> assignStudent(@RequestParam Long studentId, @RequestParam Long courseId) {
+        return ResponseEntity.ok(studentService.assignStudent(studentId, courseId));
+    }
+
 }

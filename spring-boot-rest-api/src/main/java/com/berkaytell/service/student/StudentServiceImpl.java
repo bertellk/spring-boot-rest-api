@@ -5,10 +5,12 @@ import com.berkaytell.dto.student.GetAllStudentsDto;
 import com.berkaytell.dto.student.GetSingleStudentDto;
 import com.berkaytell.dto.student.InsertStudentDto;
 import com.berkaytell.mapper.StudentMapper;
+import com.berkaytell.model.Course;
 import com.berkaytell.model.Student;
 import com.berkaytell.repository.StudentRepository;
 import com.berkaytell.result.DataResult;
 import com.berkaytell.result.Result;
+import com.berkaytell.service.course.CourseService;
 import jakarta.persistence.Tuple;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
@@ -22,6 +24,7 @@ import java.util.Objects;
 public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
+    private final CourseService courseService;
 
     @Override
     public GetSingleStudentDto findById(Long id) {
@@ -115,6 +118,8 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Tuple getTuple(String name) {
+
+
         Tuple tuple = studentRepository.findByCustomName(name);
         Student.builder()
                 .age((Integer) tuple.get("age"))
@@ -132,6 +137,63 @@ public class StudentServiceImpl implements StudentService {
         } catch (DataAccessException e) {
             return Result.of(false);
         }
+    }
+
+    @Override
+    public void detachStudentsFromCourse(Long courseId) {
+        List<Student> students = studentRepository.findByCourseId(courseId);
+        students.forEach(s -> s.setCourse(null));
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return studentRepository.existsById(id);
+    }
+
+    @Override
+    public Integer getAgeById(Long id) {
+        return studentRepository.getAgeById(id);
+    }
+
+    @Override
+    public boolean getHasPayTheFeeById(Long id) {
+        Student student = studentRepository.findById(id).orElse(null);
+
+        // students null ise false döndürür, değilse student'in has pay the fee alanını döndürün
+        return student != null && student.getHasPayTheFee();
+    }
+
+    @Override
+    public Result assignStudent(Long studentId, Long courseId) {
+        if (!checkIfAssignable(studentId, courseId))
+            Result.of(false, "Atama Yapılamaz");
+
+        Student student = studentRepository.findById(studentId).orElse(null);
+        //atama kısmı
+        student.setCourse(Course.builder().id(courseId).build());
+        studentRepository.save(student);
+
+        //varmı, yaşı yeto mu, kurs kotası dolu mu, ödeme yaptı mı,
+        return Result.of(true, "Öğrenci Atandı");
+    }
+
+    private boolean checkIfAssignable(Long studentId, Long courseId) {
+        if (!courseService.existsById(courseId))
+            return false;
+
+        if (!existsById(studentId))
+            return false;
+
+        Student student = studentRepository.findById(studentId).orElse(null);
+        // elimizde kursun minAge, ya öğrenci servisten studentId ile o öğrencinin yaşını çekcez
+        if (!courseService.isStudentAgeValid(courseId, student.getAge()))
+            return false;
+        // ya da minAge'i ve studentId'yi, studentService göndercez
+
+        if (!getHasPayTheFeeById(studentId))
+            return false;
+
+        return courseService.canAssignStudent(courseId);
     }
 
 }
