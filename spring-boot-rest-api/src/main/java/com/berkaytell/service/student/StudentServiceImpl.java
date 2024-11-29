@@ -64,6 +64,15 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public String insert(InsertStudentDto dto) {
+        //Mapper üstünde olma sebebi zaten 11 haneli değilse hiç bakmayalım diye.
+
+        if(dto.getNationalityNumber()==null || dto.getNationalityNumber().length() != 11){
+            return "Türkiye Cumhuriyeti Kimlik Numarası 11 haneli olmalıdır!";
+        }
+        //Aynı Tc var ise kayıt olmaz.
+        if(studentRepository.existsByNationalityNumber(dto.getNationalityNumber())!=null){
+            return "Zaten kayıtlı";
+        }
 
         Student studentToInsert = studentMapper.forResponse().map(dto, Student.class);
 
@@ -82,7 +91,7 @@ public class StudentServiceImpl implements StudentService {
 //        if (optionalStudent.isEmpty())
 
         // öğrenciyi bul
-        Student studentToUpdate = studentRepository.findById(studentId).orElse(null);
+        Student studentToUpdate  = studentRepository.findById(studentId).orElse(null);
 
         // öğrenci null ise succes : false
         if (studentToUpdate == null)

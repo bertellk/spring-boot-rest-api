@@ -42,4 +42,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     @Query("SELECT s.age FROM Student s WHERE s.id = :id")
     Integer getAgeById(@Param("id") Long id);
 
+    //Burada bilerek TCKimlikNo yazdım kullanımı görelim diye
+    @Query("SELECT s FROM Student s WHERE s.nationalityNumber = :TCKimlikNo")
+    String existsByNationalityNumber(@Param("TCKimlikNo")String nationalityNumber);
 }
