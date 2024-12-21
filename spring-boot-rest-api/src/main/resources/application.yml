@@ -1,13 +1,30 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/db_data1
+    url: jdbc:postgresql://localhost:5432/api_demo
     username: postgres
-    password: 12345
+    password: postgres
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: update #ddl-auto: drop (datayı siler)
     show-sql: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  security:
+    filter:
+      whiteList: >
+        /api/v1/student/**,
+        /api/v1/auth/**
+
+jwt:
+  secret-key: 9f1d0b2e5a749f7e56702f0c9a7a0c69a7035cdad7b9f0a6d4bbd3dbfe9a15a0
+  access:
+    expiration: 86400000
+  refresh:
+    expiration: 604800000
+
+security-key: 720f6f7a-1a4a-4662-aea1-480bf0baa2d8
+
+cors:
+  allowed-origins: "http://localhost:300,http://localhost:8080"
