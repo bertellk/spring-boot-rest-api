@@ -38,7 +38,7 @@ public class SecurityConfig {
                         //.requestMatchers("/api/admin/**").hasAnyAuthority("ADMIN")
                         .anyRequest().authenticated()
                 )
-                //.exceptionHandling(ex -> ex.accessDeniedHandler())
+//                .exceptionHandling(ex -> ex.accessDeniedHandler())
                 .sessionManagement(sm -> sm
                         .sessionFixation().migrateSession()
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

@@ -1,6 +1,7 @@
 package com.berkaytell.controller;
 
 import com.berkaytell.dto.authentication.LogInResponse;
+import com.berkaytell.dto.authentication.LogOutRequest;
 import com.berkaytell.dto.user.LogInUserDto;
 import com.berkaytell.dto.user.SignUpUserDto;
 import com.berkaytell.result.DataResult;
@@ -28,6 +29,11 @@ public class AuthenticationController {
     @PostMapping("/log-in")
     public ResponseEntity<DataResult<LogInResponse>> logIn(@RequestBody LogInUserDto logInUserDto) {
         return ResponseEntity.ok(authenticationService.logIn(logInUserDto));
+    }
+
+    @PostMapping("/log-out")
+    public ResponseEntity<Result> logOut(@RequestBody LogOutRequest logOutRequest) {
+        return ResponseEntity.ok(authenticationService.logOut(logOutRequest));
     }
 
 }

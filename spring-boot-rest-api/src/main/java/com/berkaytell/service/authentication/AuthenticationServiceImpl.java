@@ -1,6 +1,7 @@
 package com.berkaytell.service.authentication;
 
 import com.berkaytell.dto.authentication.LogInResponse;
+import com.berkaytell.dto.authentication.LogOutRequest;
 import com.berkaytell.dto.user.LogInUserDto;
 import com.berkaytell.dto.user.SignUpUserDto;
 import com.berkaytell.model.Role;
@@ -11,7 +12,9 @@ import com.berkaytell.security.JwtService;
 import com.berkaytell.service.token.TokenService;
 import com.berkaytell.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +22,8 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class AuthenticationServiceImpl implements AuthenticationService{
+@Slf4j
+public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserService userService;
     private final JwtService jwtService;
@@ -37,13 +41,16 @@ public class AuthenticationServiceImpl implements AuthenticationService{
         saveToken(savedUser, accessToken, refreshToken);
 
         return Result.of(true, "Kayıt Başarılı.");
-
     }
 
     @Override
     public DataResult<LogInResponse> logIn(LogInUserDto logInUserDto) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(logInUserDto.getUserName(), logInUserDto.getPassword()));
-
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(logInUserDto.getUserName(), logInUserDto.getPassword()));
+        }catch (BadCredentialsException e) {
+            //TODO kendi exceptionunu yaz AuthenticationException ve onu fırlat
+            log.info(e.getMessage());
+        }
         User user = userService.findByUserName(logInUserDto.getUserName());
 
         if (user == null)
@@ -56,9 +63,17 @@ public class AuthenticationServiceImpl implements AuthenticationService{
         return DataResult.of(createLogInResponseInstance(accessToken, refreshToken, user.getRoles().stream().map(Role::getName).toList()), true, "Giriş Yapıldı.");
     }
 
+    @Override
+    public Result logOut(LogOutRequest logOutRequest) {
+        if (logOutRequest == null || logOutRequest.getToken() == null)
+            return Result.of(false, "Invalid Token");
+
+        return tokenService.delete(logOutRequest.getToken());
+    }
+
     private void saveToken(User user, String accessToken, String refreshToken) {
-        tokenService.saveToken(user, accessToken);
-        tokenService.saveToken(user, refreshToken);
+        tokenService.save(user, accessToken);
+        tokenService.save(user, refreshToken);
     }
 
     private LogInResponse createLogInResponseInstance(String accessToken, String refreshToken, List<String> roles) {

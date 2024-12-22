@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +21,8 @@ import java.util.Set;
 @SuperBuilder
 @Getter
 @Setter
+@SQLDelete(sql = "UPDATE app_users SET is_deleted = true WHERE id=?")
+@SQLRestriction(value = "is_deleted = false")
 @Entity
 @Table(name = "app_users")
 public class User extends BaseEntity implements UserDetails {
