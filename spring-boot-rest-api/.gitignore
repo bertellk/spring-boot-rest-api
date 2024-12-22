@@ -33,5 +33,6 @@ build/
 .vscode/
 
 ### SonarLint ###
-.idea/sonarlint
-.idea/sonarlint/issuestore
+.idea/sonarlint/
+.idea/sonarlint/issuestore/
+.sonarlint/
