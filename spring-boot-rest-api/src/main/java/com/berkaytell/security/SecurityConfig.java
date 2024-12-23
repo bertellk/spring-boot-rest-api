@@ -32,11 +32,10 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(ahr -> ahr
                         .requestMatchers(whiteList).permitAll()
-                        //.requestMatchers("/api/admin/**").hasAnyAuthority("ADMIN")
+                        //.requestMatchers("/api/admin/**").hasAnyAuthority("ADMIN")  //ihtiyacımız olmayacak, kendi yetkilendirme yapımızı kuracağız
                         .requestMatchers(blackList).denyAll() // database drop edildiğinde permitAll yap sonrasında tekrar denyAll yap
                         .anyRequest().authenticated()
                 )
-//                .exceptionHandling(ex -> ex.accessDeniedHandler())
                 .sessionManagement(sm -> sm
                         .sessionFixation().migrateSession()
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
