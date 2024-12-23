@@ -31,4 +31,4 @@ jwt:
 security-key: 720f6f7a-1a4a-4662-aea1-480bf0baa2d8
 
 cors:
-  allowed-origins: "http://localhost:300,http://localhost:8080"
+  allowed-origins: "http://localhost:3000,http://localhost:8080"
