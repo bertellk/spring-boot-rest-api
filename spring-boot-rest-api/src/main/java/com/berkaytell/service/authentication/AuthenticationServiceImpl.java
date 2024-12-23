@@ -4,7 +4,7 @@ import com.berkaytell.dto.authentication.LogInResponse;
 import com.berkaytell.dto.authentication.LogOutRequest;
 import com.berkaytell.dto.user.LogInUserDto;
 import com.berkaytell.dto.user.SignUpUserDto;
-import com.berkaytell.exception.BadCredentialsException;
+import com.berkaytell.exception.custom_exceptions.BadCredentialsException;
 import com.berkaytell.model.Role;
 import com.berkaytell.model.User;
 import com.berkaytell.result.DataResult;

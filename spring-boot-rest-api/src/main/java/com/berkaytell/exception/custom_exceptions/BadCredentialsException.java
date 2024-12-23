@@ -1,4 +1,4 @@
-package com.berkaytell.exception;
+package com.berkaytell.exception.custom_exceptions;
 
 import com.berkaytell.configuration.ConstantErrorMessages;
 

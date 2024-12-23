@@ -1,6 +1,7 @@
 package com.berkaytell.exception;
 
 import com.berkaytell.configuration.ConstantErrorMessages;
+import com.berkaytell.exception.custom_exceptions.BadCredentialsException;
 import com.berkaytell.result.Result;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
