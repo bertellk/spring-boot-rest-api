@@ -1,10 +1,7 @@
 package com.berkaytell.model;
 
 import jakarta.persistence.MappedSuperclass;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
@@ -17,6 +14,7 @@ import java.time.LocalDateTime;
 @Setter
 public class BaseEntity {
     private boolean isDeleted = false; // kalıcı olarak silme (ama dümenden)
+    @Builder.Default
     private boolean isActive = true; // instagram hesap dondurdun
     private LocalDateTime createDate = LocalDateTime.now();
     private LocalDateTime lastUpdateTime;
