@@ -4,6 +4,7 @@ import com.berkaytell.dto.authentication.LogInResponse;
 import com.berkaytell.dto.authentication.LogOutRequest;
 import com.berkaytell.dto.user.LogInUserDto;
 import com.berkaytell.dto.user.SignUpUserDto;
+import com.berkaytell.exception.BadCredentialsException;
 import com.berkaytell.model.Role;
 import com.berkaytell.model.User;
 import com.berkaytell.result.DataResult;
@@ -14,7 +15,6 @@ import com.berkaytell.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +24,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class AuthenticationServiceImpl implements AuthenticationService {
-
     private final UserService userService;
     private final JwtService jwtService;
     private final TokenService tokenService;
@@ -45,12 +44,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public DataResult<LogInResponse> logIn(LogInUserDto logInUserDto) {
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(logInUserDto.getUserName(), logInUserDto.getPassword()));
-        }catch (BadCredentialsException e) {
-            //TODO kendi exceptionunu yaz AuthenticationException ve onu fırlat
-            log.info(e.getMessage());
-        }
+        authenticate(logInUserDto.getUserName(), logInUserDto.getPassword());
         User user = userService.findByUserName(logInUserDto.getUserName());
 
         if (user == null)
@@ -82,5 +76,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .refreshToken(refreshToken)
                 .roles(roles)
                 .build();
+    }
+
+    private void authenticate(String username, String password) {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        } catch (Exception e) {
+            throw new BadCredentialsException();
+        }
     }
 }
