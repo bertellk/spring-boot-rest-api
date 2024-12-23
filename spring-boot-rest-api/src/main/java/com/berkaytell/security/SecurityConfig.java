@@ -1,7 +1,5 @@
 package com.berkaytell.security;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -13,8 +11,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.logout.LogoutHandler;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 @Configuration
 @RequiredArgsConstructor
@@ -23,11 +19,12 @@ public class SecurityConfig {
 
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-//    private final LogoutHandler logoutHandler;
-//    private final LogoutSuccessHandler logoutSuccessHandler;
 
     @Value("${spring.security.filter.whiteList}")
     private String[] whiteList;
+
+    @Value("${spring.security.filter.blackList}")
+    private String[] blackList;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -36,6 +33,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(ahr -> ahr
                         .requestMatchers(whiteList).permitAll()
                         //.requestMatchers("/api/admin/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers(blackList).denyAll() // database drop edildiğinde permitAll yap sonrasında tekrar denyAll yap
                         .anyRequest().authenticated()
                 )
 //                .exceptionHandling(ex -> ex.accessDeniedHandler())
@@ -45,11 +43,6 @@ public class SecurityConfig {
                 )
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-//                .logout(l -> l
-//                        .logoutUrl("/api/auth/log-out")
-//                        .addLogoutHandler(logoutHandler)
-//                        .logoutSuccessHandler(logoutSuccessHandler)
-//                );
 
         return http.build();
     }

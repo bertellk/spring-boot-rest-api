@@ -15,7 +15,11 @@ spring:
     filter:
       whiteList: >
         /api/v1/student/**,
-        /api/v1/auth/**
+        /api/v1/auth/**,
+        /swagger-ui/**,
+        /v3/api-docs/**
+      blackList: >
+        /api/v1/load-data/**
 
 jwt:
   secret-key: 9f1d0b2e5a749f7e56702f0c9a7a0c69a7035cdad7b9f0a6d4bbd3dbfe9a15a0
