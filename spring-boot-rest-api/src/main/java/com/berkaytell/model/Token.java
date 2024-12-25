@@ -10,7 +10,7 @@ import org.hibernate.annotations.SQLRestriction;
 @Builder
 @Getter
 @Setter
-@SQLDelete(sql = "UPDATE tokens SET expired = true WHERE id=?")
+@SQLDelete(sql = "UPDATE tokens SET expired = TRUE, revoked = TRUE WHERE id=?")
 @SQLRestriction(value = "expired = false")
 @Entity
 @Table(name = "tokens")

@@ -1,6 +1,5 @@
 package com.berkaytell.security;
 
-import com.berkaytell.security.handlers.CustomAccessDeniedHandler;
 import com.berkaytell.security.handlers.CustomAuthenticationFailureHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +19,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
     @Value("${spring.security.filter.whiteList}")
@@ -44,7 +42,6 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .exceptionHandling(ex -> ex
-                        //.accessDeniedHandler(customAccessDeniedHandler) //ihtiyaç olursa aç
                         .authenticationEntryPoint(customAuthenticationFailureHandler)
                 )
                 .authenticationProvider(authenticationProvider)
@@ -52,5 +49,4 @@ public class SecurityConfig {
 
         return http.build();
     }
-
 }

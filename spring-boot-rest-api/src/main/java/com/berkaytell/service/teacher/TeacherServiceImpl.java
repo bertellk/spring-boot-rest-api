@@ -1,6 +1,6 @@
 package com.berkaytell.service.teacher;
 
-import com.berkaytell.configuration.ConstantMessage;
+import com.berkaytell.configuration.ConstantMessages;
 import com.berkaytell.dto.teacher.GetAllTeachersDto;
 import com.berkaytell.dto.teacher.GetSingleTeacherDto;
 import com.berkaytell.dto.teacher.InsertTeacherDto;
@@ -48,9 +48,9 @@ public class TeacherServiceImpl implements TeacherService{
         Teacher teacherToInsert = teacherMapper.forResponse().map(dto, Teacher.class);
         try {
             teacherRepository.save(teacherToInsert);
-            return ConstantMessage.MESSAGE_SUCCESS;
+            return ConstantMessages.MESSAGE_SUCCESS;
         }catch (DataAccessException e){
-            return ConstantMessage.MESSAGE_FAILURE;
+            return ConstantMessages.MESSAGE_FAILURE;
         }
     }
 
@@ -61,13 +61,13 @@ public class TeacherServiceImpl implements TeacherService{
 
         //öğretmen null ise succes : false
         if(teacherToUpdate == null)
-            return ConstantMessage.TEACHER_NOT_FOUND;
+            return ConstantMessages.TEACHER_NOT_FOUND;
 
         //Set etme kısmı
         teacherToUpdate.setHasReceivedTheFee(hasReceivedTheFee);
         //save kısmı
         teacherRepository.save(teacherToUpdate);
-        return ConstantMessage.MESSAGE_SUCCESS;
+        return ConstantMessages.MESSAGE_SUCCESS;
     }
 
     @Override
@@ -75,11 +75,11 @@ public class TeacherServiceImpl implements TeacherService{
     public String delete(Long id) {
         Teacher teacherToDelete = teacherRepository.findById(id).orElse(null);
     if(teacherToDelete == null){
-        return ConstantMessage.TEACHER_NOT_FOUND;
+        return ConstantMessages.TEACHER_NOT_FOUND;
     }
          teacherRepository.delete(teacherToDelete);
 
-        return ConstantMessage.MESSAGE_SUCCESS;
+        return ConstantMessages.MESSAGE_SUCCESS;
     }
 
     @Override
