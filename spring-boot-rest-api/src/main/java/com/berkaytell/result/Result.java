@@ -1,8 +1,8 @@
 package com.berkaytell.result;
 
-import com.berkaytell.configuration.ConstantMessage;
+import com.berkaytell.configuration.ConstantMessages;
 
-public class Result implements IResult{
+public class Result implements IResult {
     // Amacı kullanıcıyı bilgilendirmektir.
     // Yazılımcı kaynaklı Projeyi patlatan durumlarda throw ile dönüş yapılır. (Veritabanı hataları, null pointer exception)
     // Kullanıcı taraflı durumlarda Result dönülür. (Öğrenci parasını ödemeden kaydolamaz, Tc'no 11'den farklı olamaz)
@@ -14,10 +14,10 @@ public class Result implements IResult{
 
     public Result(boolean success) {
         this.success = success;
-        this.message = success ? ConstantMessage.MESSAGE_SUCCESS : ConstantMessage.MESSAGE_FAILURE;
+        this.message = success ? ConstantMessages.MESSAGE_SUCCESS : ConstantMessages.MESSAGE_FAILURE;
     }
 
-    public Result (boolean success, String message) {
+    public Result(boolean success, String message) {
         this(success);
         this.message = message;
     }

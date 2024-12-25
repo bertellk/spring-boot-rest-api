@@ -1,5 +1,6 @@
 package com.berkaytell.controller;
 
+import com.berkaytell.dto.authentication.ChangePasswordRequest;
 import com.berkaytell.dto.authentication.LogInResponse;
 import com.berkaytell.dto.authentication.LogOutRequest;
 import com.berkaytell.dto.user.LogInUserDto;

@@ -1,6 +1,6 @@
 package com.berkaytell.service.student;
 
-import com.berkaytell.configuration.ConstantMessage;
+import com.berkaytell.configuration.ConstantMessages;
 import com.berkaytell.dto.student.GetAllStudentsDto;
 import com.berkaytell.dto.student.GetSingleStudentDto;
 import com.berkaytell.dto.student.InsertStudentDto;
@@ -69,9 +69,9 @@ public class StudentServiceImpl implements StudentService {
 
         try {
             studentRepository.save(studentToInsert);
-            return ConstantMessage.MESSAGE_SUCCESS;
+            return ConstantMessages.MESSAGE_SUCCESS;
         } catch (DataAccessException e) {
-            return ConstantMessage.MESSAGE_FAILURE;
+            return ConstantMessages.MESSAGE_FAILURE;
         }
     }
 
@@ -86,14 +86,14 @@ public class StudentServiceImpl implements StudentService {
 
         // öğrenci null ise succes : false
         if (studentToUpdate == null)
-            return ConstantMessage.STUDENT_NOT_FOUND;
+            return ConstantMessages.STUDENT_NOT_FOUND;
 
         // set etme kısmı
         studentToUpdate.setHasPayTheFee(hasPayTheFee);
         // save
         studentRepository.save(studentToUpdate);
 
-        return ConstantMessage.MESSAGE_SUCCESS;
+        return ConstantMessages.MESSAGE_SUCCESS;
     }
 
     @Override
@@ -102,7 +102,7 @@ public class StudentServiceImpl implements StudentService {
         Student studentToDelete = studentRepository.findById(id).orElse(null);
 
         if (studentToDelete == null) {
-            return ConstantMessage.STUDENT_NOT_FOUND;
+            return ConstantMessages.STUDENT_NOT_FOUND;
         }
 
         studentRepository.delete(studentToDelete);
@@ -113,7 +113,7 @@ public class StudentServiceImpl implements StudentService {
 //                .hasPayTheFee(false)
 //                .build();
 
-        return ConstantMessage.MESSAGE_SUCCESS;
+        return ConstantMessages.MESSAGE_SUCCESS;
     }
 
     @Override

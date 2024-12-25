@@ -7,4 +7,7 @@ public interface TokenService {
     void save(User user, String jwtToken);
 
     Result delete(String token);
+
+    void deleteAllTokensAssociatedWithUser(Long userId);
+
 }

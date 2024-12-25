@@ -7,6 +7,8 @@ import com.berkaytell.result.Result;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class TokenServiceImpl implements TokenService {
@@ -26,6 +28,13 @@ public class TokenServiceImpl implements TokenService {
 
         tokenRepository.delete(tokenToDelete);
         return Result.of(true);
+    }
+
+    @Override
+    public void deleteAllTokensAssociatedWithUser(Long userId) {
+        List<Token> tokens = tokenRepository.findAllValidTokenByUser(userId);
+
+        tokenRepository.deleteAll(tokens);
     }
 
     private Token createInstance(User user, String jwtToken) {
