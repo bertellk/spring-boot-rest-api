@@ -1,6 +1,6 @@
 package com.berkaytell.service.token;
 
-import com.berkaytell.model.Token;
+import com.berkaytell.model.auth.Token;
 import com.berkaytell.model.User;
 import com.berkaytell.repository.TokenRepository;
 import com.berkaytell.result.Result;

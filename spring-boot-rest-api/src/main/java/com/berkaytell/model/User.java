@@ -1,5 +1,6 @@
 package com.berkaytell.model;
 
+import com.berkaytell.model.auth.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +10,6 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -21,25 +21,24 @@ import java.util.Set;
 @SuperBuilder
 @Getter
 @Setter
-@SQLDelete(sql = "UPDATE app_users SET is_deleted = true WHERE id=?")
+@SQLDelete(sql = "UPDATE users SET is_deleted = true WHERE id=?")
 @SQLRestriction(value = "is_deleted = false")
 @Entity
-@Table(name = "app_users")
+@Table(name = "users")
 public class User extends BaseEntity implements UserDetails {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String userName;
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Role> roles = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // TODO buradan null dönüp kendi filterin içinde kendi yetkilendirmeni yapabilirsin.
-        return this.roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).toList();
+        return null;
     }
 
     @Override

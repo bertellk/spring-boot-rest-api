@@ -5,7 +5,7 @@ import com.berkaytell.dto.authentication.LogOutRequest;
 import com.berkaytell.dto.user.LogInUserDto;
 import com.berkaytell.dto.user.SignUpUserDto;
 import com.berkaytell.exception.custom_exceptions.BadCredentialsException;
-import com.berkaytell.model.Role;
+import com.berkaytell.model.auth.Role;
 import com.berkaytell.model.User;
 import com.berkaytell.result.DataResult;
 import com.berkaytell.result.Result;
@@ -54,7 +54,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         final String refreshToken = jwtService.generateRefreshToken(user);
         saveToken(user, accessToken, refreshToken);
 
-        return DataResult.of(createLogInResponseInstance(accessToken, refreshToken, user.getRoles().stream().map(Role::getName).toList()), true, "Giriş Yapıldı.");
+        //        return DataResult.of(createLogInResponseInstance(accessToken, refreshToken, user.getRoles().stream().map(Role::getName).toList()), true, "Giriş Yapıldı.");
+        return DataResult.of(createLogInResponseInstance(accessToken, refreshToken), true, "Giriş Yapıldı.");
     }
 
     @Override
@@ -70,11 +71,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         tokenService.save(user, refreshToken);
     }
 
-    private LogInResponse createLogInResponseInstance(String accessToken, String refreshToken, List<String> roles) {
+    private LogInResponse createLogInResponseInstance(String accessToken, String refreshToken) {
         return LogInResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
-                .roles(roles)
                 .build();
     }
 
