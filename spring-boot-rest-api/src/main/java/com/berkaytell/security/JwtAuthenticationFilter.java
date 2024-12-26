@@ -65,7 +65,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         final String pageUrl = getPageUrl(request);
-        if (checkAuthorities(request.getServletPath(), request.getMethod(), userName, pageUrl)) {
+        final String endpoint = request.getServletPath();
+
+        if (isWhiteListed(endpoint)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        if (checkAuthorities(endpoint, request.getMethod(), userName, pageUrl)) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -95,9 +102,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return false;
     }
 
-    // TODO sign-up patladı, endpoint whitelist içinde varsa retun dön
-    private boolean whiteListContainsEndpoint() {
-
+    private boolean isWhiteListed(String endpoint) {
+        for (String item : whiteList) {
+            final String patternPrefix = item.replace("/**", "");
+            if (endpoint.startsWith(patternPrefix))
+                return true;
+        }
+        return false;
     }
 
     private String getPageUrl(HttpServletRequest request) {
