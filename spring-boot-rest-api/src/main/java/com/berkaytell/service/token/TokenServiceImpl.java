@@ -1,6 +1,6 @@
 package com.berkaytell.service.token;
 
-import com.berkaytell.model.Token;
+import com.berkaytell.model.auth.Token;
 import com.berkaytell.model.User;
 import com.berkaytell.repository.TokenRepository;
 import com.berkaytell.result.Result;
@@ -35,6 +35,11 @@ public class TokenServiceImpl implements TokenService {
         List<Token> tokens = tokenRepository.findAllValidTokenByUser(userId);
 
         tokenRepository.deleteAll(tokens);
+    }
+
+    @Override
+    public boolean isTokenValid(String token) {
+        return tokenRepository.findByToken(token).map(t -> !t.isExpired() && !t.isRevoked()).orElse(false);
     }
 
     private Token createInstance(User user, String jwtToken) {

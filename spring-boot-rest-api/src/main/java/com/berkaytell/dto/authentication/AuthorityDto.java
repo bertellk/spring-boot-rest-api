@@ -7,7 +7,8 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-public class LogInResponse {
-    private String accessToken;
-    private String refreshToken;
+public class AuthorityDto {
+    private String authAction;
+    private String authPage;
+    private String endpoint;
 }

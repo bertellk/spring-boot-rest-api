@@ -1,5 +1,6 @@
-package com.berkaytell.model;
+package com.berkaytell.model.auth;
 
+import com.berkaytell.model.User;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;

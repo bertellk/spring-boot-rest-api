@@ -2,6 +2,7 @@ package com.berkaytell.service.user;
 
 import com.berkaytell.configuration.ConstantErrorMessages;
 import com.berkaytell.configuration.ConstantMessages;
+import com.berkaytell.dto.authentication.AuthorityDto;
 import com.berkaytell.dto.authentication.ChangePasswordRequest;
 import com.berkaytell.dto.user.SignUpUserDto;
 import com.berkaytell.model.User;
@@ -12,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -70,7 +71,7 @@ public class UserServiceImpl implements UserService {
                 .userName(signUpUserDto.getUserName())
                 .password(passwordEncoder.encode(signUpUserDto.getPassword()))
                 .isActive(true)
-                .roles(new HashSet<>())
+                //.roles(new HashSet<>())
                 .build();
     }
 

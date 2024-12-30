@@ -1,6 +1,5 @@
 package com.berkaytell.controller;
 
-import com.berkaytell.dto.authentication.ChangePasswordRequest;
 import com.berkaytell.dto.authentication.LogInResponse;
 import com.berkaytell.dto.authentication.LogOutRequest;
 import com.berkaytell.dto.user.LogInUserDto;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-//@CrossOrigin you may need
 @RequestMapping("/api/v1/auth")
 public class AuthenticationController {
     private final AuthenticationService authenticationService;

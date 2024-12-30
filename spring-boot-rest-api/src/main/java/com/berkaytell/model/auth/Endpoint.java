@@ -1,4 +1,4 @@
-package com.berkaytell.model;
+package com.berkaytell.model.auth;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -7,10 +7,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "roles")
-public class Role {
+@Table(name = "endpoints")
+public class Endpoint {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+
+    private String endpoint;
 }

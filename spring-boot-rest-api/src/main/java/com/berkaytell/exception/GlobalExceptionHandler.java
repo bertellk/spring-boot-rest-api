@@ -1,13 +1,17 @@
 package com.berkaytell.exception;
 
 import com.berkaytell.configuration.ConstantErrorMessages;
-import com.berkaytell.exception.custom_exceptions.BadCredentialsException;
+import com.berkaytell.exception.custom_exceptions.*;
 import com.berkaytell.result.Result;
+import io.jsonwebtoken.ExpiredJwtException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -27,10 +31,23 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(exception, apiError, new HttpHeaders(), HttpStatusCode.valueOf(apiError.getStatus()), webRequest);
     }
 
-    @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<Object> handleBadCredentialsException(BadCredentialsException exception, WebRequest webRequest) {
-        Result body = Result.of(false, exception.getMessage());
+    @ExceptionHandler({BadCredentialsException.class, InvalidTokenException.class, UnauthorizedException.class, ForbiddenException.class, ExpiredJwtException.class, DisabledException.class})
+    public ResponseEntity<Object> handleBadCredentialsException(Exception exception, WebRequest webRequest) {
+        Result body = Result.of(false, getCustomErrorMessage(exception));
         return handleExceptionInternal(exception, body, new HttpHeaders(), HttpStatus.OK, webRequest);
+    }
+
+    String getCustomErrorMessage(Exception exception) {
+        if (exception instanceof DisabledException)
+            return new DisabledUserException().getMessage();
+        if (exception instanceof ExpiredJwtException)
+            return new InvalidTokenException().getMessage();
+        if (exception instanceof ForbiddenException)
+            return new ForbiddenException().getMessage();
+        if (exception instanceof BadCredentialsException)
+            return new CustomBadCredentialsException().getMessage();
+
+        return ConstantErrorMessages.UNEXPECTED_ERROR;
     }
 
 }

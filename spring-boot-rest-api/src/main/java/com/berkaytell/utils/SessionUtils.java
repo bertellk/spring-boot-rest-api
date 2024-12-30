@@ -13,7 +13,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Component
 public class SessionUtils {
-
     private static User getUserEntity() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
