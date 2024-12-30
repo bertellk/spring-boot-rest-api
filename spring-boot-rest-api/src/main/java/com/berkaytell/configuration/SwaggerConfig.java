@@ -18,7 +18,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
                 contact = @Contact(
                         name = "Oğuzhan SANCAR",
                         email = "oguzhansancar93@icloud.com",
-                        url = "https://github.com/oguzhan93/LibraryApplication/")
+                        url = "")
         ),
         security = {
                 @SecurityRequirement(
