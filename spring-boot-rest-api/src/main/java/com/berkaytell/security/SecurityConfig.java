@@ -59,7 +59,6 @@ public class SecurityConfig {
         http.addFilterAfter(jwtAuthenticationFilter, CustomSecurityExceptionHandler.class);
         http.addFilterAfter(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
 
-
         return http.build();
     }
 }

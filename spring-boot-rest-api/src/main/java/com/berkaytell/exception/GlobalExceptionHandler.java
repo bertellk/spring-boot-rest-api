@@ -37,12 +37,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(exception, body, new HttpHeaders(), HttpStatus.OK, webRequest);
     }
 
-    @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<Object> handleAuthenticationException(Exception exception, HttpServletRequest request, WebRequest webRequest) {
-        Result body = Result.of(false, ConstantErrorMessages.SESSION_EXPIRED);
-        return handleExceptionInternal(exception, body, new HttpHeaders(), HttpStatus.OK, webRequest);
-    }
-
     String getCustomErrorMessage(Exception exception) {
         if (exception instanceof DisabledException)
             return new DisabledUserException().getMessage();
