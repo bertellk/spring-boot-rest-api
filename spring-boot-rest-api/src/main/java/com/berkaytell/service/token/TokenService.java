@@ -10,4 +10,6 @@ public interface TokenService {
 
     void deleteAllTokensAssociatedWithUser(Long userId);
 
+    boolean isTokenValid(String token);
+
 }

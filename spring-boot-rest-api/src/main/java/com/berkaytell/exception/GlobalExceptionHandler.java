@@ -1,8 +1,10 @@
 package com.berkaytell.exception;
 
 import com.berkaytell.configuration.ConstantErrorMessages;
-import com.berkaytell.exception.custom_exceptions.BadCredentialsException;
+import com.berkaytell.exception.custom_exceptions.*;
 import com.berkaytell.result.Result;
+import io.jsonwebtoken.ExpiredJwtException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -27,9 +29,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(exception, apiError, new HttpHeaders(), HttpStatusCode.valueOf(apiError.getStatus()), webRequest);
     }
 
-    @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<Object> handleBadCredentialsException(BadCredentialsException exception, WebRequest webRequest) {
+    @ExceptionHandler({BadCredentialsException.class, DisabledUserException.class, InvalidTokenException.class, UnauthorizedException.class, ForbiddenException.class})
+    public ResponseEntity<Object> handleBadCredentialsException(Exception exception, WebRequest webRequest) {
         Result body = Result.of(false, exception.getMessage());
+        return handleExceptionInternal(exception, body, new HttpHeaders(), HttpStatus.OK, webRequest);
+    }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<Object> handleExpiredTokenException(Exception exception, HttpServletRequest request, WebRequest webRequest) {
+        Result body = Result.of(false, ConstantErrorMessages.SESSION_EXPIRED);
         return handleExceptionInternal(exception, body, new HttpHeaders(), HttpStatus.OK, webRequest);
     }
 

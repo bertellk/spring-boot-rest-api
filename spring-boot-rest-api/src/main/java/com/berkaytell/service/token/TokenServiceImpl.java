@@ -37,6 +37,11 @@ public class TokenServiceImpl implements TokenService {
         tokenRepository.deleteAll(tokens);
     }
 
+    @Override
+    public boolean isTokenValid(String token) {
+        return tokenRepository.findByToken(token).map(t -> !t.isExpired() && !t.isRevoked()).orElse(false);
+    }
+
     private Token createInstance(User user, String jwtToken) {
         return Token.builder()
                 .user(user)
