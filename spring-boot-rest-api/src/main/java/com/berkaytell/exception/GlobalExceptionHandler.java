@@ -10,6 +10,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -29,16 +31,29 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(exception, apiError, new HttpHeaders(), HttpStatusCode.valueOf(apiError.getStatus()), webRequest);
     }
 
-    @ExceptionHandler({BadCredentialsException.class, DisabledUserException.class, InvalidTokenException.class, UnauthorizedException.class, ForbiddenException.class})
+    @ExceptionHandler({BadCredentialsException.class, InvalidTokenException.class, UnauthorizedException.class, ForbiddenException.class, ExpiredJwtException.class, DisabledException.class})
     public ResponseEntity<Object> handleBadCredentialsException(Exception exception, WebRequest webRequest) {
-        Result body = Result.of(false, exception.getMessage());
+        Result body = Result.of(false, getCustomErrorMessage(exception));
         return handleExceptionInternal(exception, body, new HttpHeaders(), HttpStatus.OK, webRequest);
     }
 
-    @ExceptionHandler(ExpiredJwtException.class)
-    public ResponseEntity<Object> handleExpiredTokenException(Exception exception, HttpServletRequest request, WebRequest webRequest) {
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<Object> handleAuthenticationException(Exception exception, HttpServletRequest request, WebRequest webRequest) {
         Result body = Result.of(false, ConstantErrorMessages.SESSION_EXPIRED);
         return handleExceptionInternal(exception, body, new HttpHeaders(), HttpStatus.OK, webRequest);
+    }
+
+    String getCustomErrorMessage(Exception exception) {
+        if (exception instanceof DisabledException)
+            return new DisabledUserException().getMessage();
+        if (exception instanceof ExpiredJwtException)
+            return new InvalidTokenException().getMessage();
+        if (exception instanceof ForbiddenException)
+            return new ForbiddenException().getMessage();
+        if (exception instanceof BadCredentialsException)
+            return new CustomBadCredentialsException().getMessage();
+
+        return ConstantErrorMessages.UNEXPECTED_ERROR;
     }
 
 }

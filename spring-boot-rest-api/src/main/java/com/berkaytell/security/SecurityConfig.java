@@ -54,14 +54,11 @@ public class SecurityConfig {
                         .sessionFixation().migrateSession()
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 );
-//                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-//                .addFilterAfter(authorizationFilter, UsernamePasswordAuthenticationFilter.class)
-//                .addFilterAfter(exceptionHandler, AuthorizationFilter.class);
-//
 
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(exceptionHandler, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAfter(jwtAuthenticationFilter, CustomSecurityExceptionHandler.class);
         http.addFilterAfter(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
-        http.addFilterAfter(exceptionHandler, AuthorizationFilter.class);
+
 
         return http.build();
     }

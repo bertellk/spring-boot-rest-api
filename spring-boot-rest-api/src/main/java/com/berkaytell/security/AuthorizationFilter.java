@@ -3,7 +3,6 @@ package com.berkaytell.security;
 import com.berkaytell.dto.authentication.AuthorityDto;
 import com.berkaytell.exception.custom_exceptions.DisabledUserException;
 import com.berkaytell.exception.custom_exceptions.ForbiddenException;
-import com.berkaytell.repository.TokenRepository;
 import com.berkaytell.repository.UserRepository;
 import com.berkaytell.service.token.TokenService;
 import jakarta.servlet.FilterChain;
@@ -38,16 +37,14 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         final String authenticationHeader = request.getHeader("Authorization");
-        final String jwt;
-        final String userName;
+        String jwt = null;
+        String userName = null;
 
-        if (authenticationHeader == null || !authenticationHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
-            return;
+        if (authenticationHeader != null && authenticationHeader.startsWith("Bearer ")) {
+            jwt = authenticationHeader.substring(7);
+
+            userName = jwtService.extractUserName(jwt);
         }
-
-        jwt = authenticationHeader.substring(7);
-        userName = jwtService.extractUserName(jwt);
 
         if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(userName);

@@ -1,6 +1,5 @@
 package com.berkaytell.security;
 
-import com.berkaytell.exception.custom_exceptions.DisabledUserException;
 import com.berkaytell.exception.custom_exceptions.InvalidTokenException;
 import com.berkaytell.service.token.TokenService;
 import jakarta.servlet.FilterChain;
@@ -35,17 +34,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (authenticationHeader != null && authenticationHeader.startsWith("Bearer ")) {
             jwt = authenticationHeader.substring(7);
 
-            if (Boolean.FALSE.equals(tokenService.isTokenValid(jwt)))
-                throw new InvalidTokenException();
-
             userName = jwtService.extractUserName(jwt);
         }
 
         if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
-
-            if (!userDetails.isEnabled())
-                throw new DisabledUserException();
 
             if (Boolean.TRUE.equals(jwtService.isTokenValid(jwt, userDetails))) {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(

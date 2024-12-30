@@ -4,8 +4,6 @@ import com.berkaytell.dto.authentication.LogInResponse;
 import com.berkaytell.dto.authentication.LogOutRequest;
 import com.berkaytell.dto.user.LogInUserDto;
 import com.berkaytell.dto.user.SignUpUserDto;
-import com.berkaytell.exception.custom_exceptions.BadCredentialsException;
-import com.berkaytell.model.auth.Role;
 import com.berkaytell.model.User;
 import com.berkaytell.result.DataResult;
 import com.berkaytell.result.Result;
@@ -17,8 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -44,7 +40,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public DataResult<LogInResponse> logIn(LogInUserDto logInUserDto) {
-        authenticate(logInUserDto.getUserName(), logInUserDto.getPassword());
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(logInUserDto.getUserName(), logInUserDto.getPassword()));
         User user = userService.findByUserName(logInUserDto.getUserName());
 
         if (user == null)
@@ -54,7 +50,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         final String refreshToken = jwtService.generateRefreshToken(user);
         saveToken(user, accessToken, refreshToken);
 
-        //        return DataResult.of(createLogInResponseInstance(accessToken, refreshToken, user.getRoles().stream().map(Role::getName).toList()), true, "Giriş Yapıldı.");
         return DataResult.of(createLogInResponseInstance(accessToken, refreshToken), true, "Giriş Yapıldı.");
     }
 
@@ -76,13 +71,5 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
-    }
-
-    private void authenticate(String username, String password) {
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        } catch (Exception e) {
-            throw new BadCredentialsException();
-        }
     }
 }
