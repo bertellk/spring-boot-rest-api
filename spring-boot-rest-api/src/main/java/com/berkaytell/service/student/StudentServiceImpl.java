@@ -11,6 +11,8 @@ import com.berkaytell.repository.StudentRepository;
 import com.berkaytell.result.DataResult;
 import com.berkaytell.result.Result;
 import com.berkaytell.service.course.CourseService;
+import com.berkaytell.utils.mail.MailService;
+import jakarta.mail.MessagingException;
 import jakarta.persistence.Tuple;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
@@ -25,6 +27,7 @@ public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
     private final CourseService courseService;
+    private final MailService mailService;
 
     @Override
     public GetSingleStudentDto findById(Long id) {
@@ -35,7 +38,7 @@ public class StudentServiceImpl implements StudentService {
 
         if (Objects.isNull(student))
             throw new IllegalArgumentException("Öğrenci Bulunamadı");
-         // request response pattern
+        // request response pattern
         return studentMapper.forResponse().map(student, GetSingleStudentDto.class);
     }
 
@@ -63,16 +66,12 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public String insert(InsertStudentDto dto) {
-
+    public Result insert(InsertStudentDto dto) throws MessagingException {
         Student studentToInsert = studentMapper.forResponse().map(dto, Student.class);
 
-        try {
-            studentRepository.save(studentToInsert);
-            return ConstantMessages.MESSAGE_SUCCESS;
-        } catch (DataAccessException e) {
-            return ConstantMessages.MESSAGE_FAILURE;
-        }
+        studentRepository.save(studentToInsert);
+        mailService.sendMail(studentToInsert.getEmail(), null, "Kayıt Başarılı", "Sayın " + studentToInsert.getName() + " " + studentToInsert.getLastName() + "\n Kaydınız Başarıyla Tamamlanmıştır.");
+        return Result.of(true, ConstantMessages.MESSAGE_SUCCESS);
     }
 
     @Override
