@@ -15,4 +15,5 @@ public class InsertStudentDto {
     private String name;
     private String lastName;
     private String nationalityNumber;
+    private String email;
 }

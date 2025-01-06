@@ -28,6 +28,7 @@ public class Student extends BaseEntity {
     private String city;
     private Integer age;
     private Boolean hasPayTheFee = false;
+    private String email;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")

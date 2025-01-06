@@ -8,4 +8,5 @@ public class ConstantErrorMessages {
     public static final String SESSION_EXPIRED = "Oturum Süreniz Dolmuştur, Lütfen Yeniden Giriş Yapın";
     public static final String DISABLED_USER = "Devre Dışı Hesap";
     public static final String UNAUTHORIZED = "Authorization Header Missing or Invalid";
+    public static final String MESSAGING_EXCEPTION = "Mail Gönderilirken Bir Hata Meydana Geldi";
 }

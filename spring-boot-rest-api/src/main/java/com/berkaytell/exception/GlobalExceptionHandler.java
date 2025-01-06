@@ -4,7 +4,7 @@ import com.berkaytell.configuration.ConstantErrorMessages;
 import com.berkaytell.exception.custom_exceptions.*;
 import com.berkaytell.result.Result;
 import io.jsonwebtoken.ExpiredJwtException;
-import jakarta.servlet.http.HttpServletRequest;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -46,6 +46,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             return new ForbiddenException().getMessage();
         if (exception instanceof BadCredentialsException)
             return new CustomBadCredentialsException().getMessage();
+        if (exception instanceof MessagingException)
+            return new CustomMessagingException().getMessage();
 
         return ConstantErrorMessages.UNEXPECTED_ERROR;
     }

@@ -6,6 +6,7 @@ import com.berkaytell.dto.student.InsertStudentDto;
 import com.berkaytell.result.DataResult;
 import com.berkaytell.result.Result;
 import com.berkaytell.service.student.StudentService;
+import jakarta.mail.MessagingException;
 import jakarta.persistence.Tuple;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +45,7 @@ public class StudentController {
     }
 
     @PostMapping("insert")
-    ResponseEntity<String> insert(@RequestBody InsertStudentDto insertDto) {
+    ResponseEntity<Result> insert(@RequestBody InsertStudentDto insertDto) throws MessagingException {
         return ResponseEntity.ok(studentService.insert(insertDto));
     }
 

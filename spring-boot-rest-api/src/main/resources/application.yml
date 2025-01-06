@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://junction.proxy.rlwy.net:50168/railway #postgresql://localhost:5432/api_demo
+    url: jdbc:postgresql://localhost:5432/api_demo #postgresql://junction.proxy.rlwy.net:50168/railway
     username: postgres
-    password: SjAAaJdWjirZxkgTRZxeWnjGTDNbMvPM
+    password: postgres #SjAAaJdWjirZxkgTRZxeWnjGTDNbMvPM
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -20,15 +20,23 @@ spring:
         /v3/api-docs/**
       blackList: >
         /api/v1/load-data/**
-
-jwt:
-  secret-key: 9f1d0b2e5a749f7e56702f0c9a7a0c69a7035cdad7b9f0a6d4bbd3dbfe9a15a0
-  access:
-    expiration: 86400000 # 1 day
-  refresh:
-    expiration: 604800000 # 7days
+    jwt:
+      secret-key: 9f1d0b2e5a749f7e56702f0c9a7a0c69a7035cdad7b9f0a6d4bbd3dbfe9a15a0
+      access:
+        expiration: 86400000 # 1 day
+      refresh:
+        expiration: 604800000 # 7days
+    cors:
+      allowed-origins: "http://localhost:3000,http://localhost:8080"
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: oguzhansancar93@gmail.com
+    password: tqlc kuqv pizd jtzg
+    protocol: smtp
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+      mail.smtp.starttls.required: true
 
 security-key: 720f6f7a-1a4a-4662-aea1-480bf0baa2d8
-
-cors:
-  allowed-origins: "http://localhost:3000,http://localhost:8080"

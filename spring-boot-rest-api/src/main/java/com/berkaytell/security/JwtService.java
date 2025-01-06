@@ -17,13 +17,13 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
-    @Value("${jwt.secret-key}")
+    @Value("${spring.security.jwt.secret-key}")
     private String secretKey;
 
-    @Value("${jwt.access.expiration}")
+    @Value("${spring.security.jwt.access.expiration}")
     private Long accessTokenExpiration;
 
-    @Value("${jwt.refresh.expiration}")
+    @Value("${spring.security.jwt.refresh.expiration}")
     private Long refreshTokenExpiration;
 
     private <T> T extractClaimFromToken(String token, Function<Claims, T> resolver) {

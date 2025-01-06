@@ -5,6 +5,7 @@ import com.berkaytell.dto.student.GetSingleStudentDto;
 import com.berkaytell.dto.student.InsertStudentDto;
 import com.berkaytell.result.DataResult;
 import com.berkaytell.result.Result;
+import jakarta.mail.MessagingException;
 import jakarta.persistence.Tuple;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public interface StudentService {
 
     List<GetAllStudentsDto> getAll();
 
-    String insert(InsertStudentDto dto);
+    Result insert(InsertStudentDto dto) throws MessagingException;
 
     String updateHasPayTheFee(Long studentId, Boolean hasPayTheFee);
 
