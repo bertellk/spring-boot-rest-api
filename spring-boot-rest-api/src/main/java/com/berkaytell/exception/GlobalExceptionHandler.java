@@ -46,8 +46,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             return new ForbiddenException().getMessage();
         if (exception instanceof BadCredentialsException)
             return new CustomBadCredentialsException().getMessage();
-        if (exception instanceof MessagingException)
-            return new CustomMessagingException().getMessage();
 
         return ConstantErrorMessages.UNEXPECTED_ERROR;
     }
