@@ -4,6 +4,7 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -24,14 +25,22 @@ public class MailServiceImpl implements MailService {
     @Async
     public void sendMail(String[] to, String[] cc, String subject, String body) throws MessagingException {
         MailResult mailResult = getResult(to, subject, body, cc);
-        mailSender.send(mailResult.message);
+        try {
+            mailSender.send(mailResult.message);
+        } catch (MailSendException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     @Override
     @Async
     public void sendMail(String to, String[] cc, String subject, String body) throws MessagingException {
         MailResult mailResult = getResult(new String[]{to}, subject, body, cc);
-        mailSender.send(mailResult.message);
+        try {
+            mailSender.send(mailResult.message);
+        } catch (MailSendException e) {
+             System.err.println(e.getMessage());
+        }
     }
 
     private MailResult getResult(String[] to, String subject, String body, String[] cc, String[] bcc) throws MessagingException {
